@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Following - {% endblock title %}
+
+{% block navbar %}
+<ul class="nav navbar-nav navbar-left">
+
+    <li><a href="{{ logout_url }}">Logout</a></li>
+</ul>
+
+<form class="navbar-form navbar-right" role="search" method="post" action="/results">
+    <div class="form-group">
+        <input type="text" name="search" class="form-control" placeholder="Search" required>
+    </div>
+    <button type="submit" name="search" class="btn btn-default">Submit</button>
+</form>
+{% endblock navbar %}
+
+
+{% block content %}
+
+<div class="jumbotron text-center">
+      <h1>Check what's new!</h1>
+</div>
+
+<div class="container-fluid text-left">
+    <div class="row content">
+        <div class="col-sm-3 sidenav">
+           <div class="profile">
+                <p class="name">{{ name }}</p>
+                <p>@{{ handle }}</p>
+                <p>{{ email }}</p>
+                <p><a class="btn btn-info btn-xs" href="/edit" role="button">Edit profile</a></p>
+           </div>
+        </div>
+
+        <div class="col-sm-9 text-center">
+
+            <ul class="nav nav-tabs nav-justified">
+                <li><a href="/home/{{ user.user_id() }}">Home</a></li>
+                <li role="presentation" class="active"><a href="/following/{{ user.user_id() }}">Following</a></li>
+            </ul>
+
+            <div class="fweets">
+                    <form name="new-tweet" method="post">
+                        <div class="input-group">
+                              <input type="text" class="form-control" name="text" maxlength="140" required>
+                              <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="submit" name="new-tweet">Tweet</button>
+                              </span>
+                        </div>
+                    </form>
+                <br>
+
+                <div class="media">
+                    <div class="media-body text-left">
+                        {% for message in list %}
+                        <div class="msg">
+
+                            <h4 class="media-heading"><a href="/other/{{ o_user.key.id() }}">{{ message.user_name }} </a><span> @{{ message.user_handle }} {{ message.date }} </span></h4>
+
+                            <p>{{ message.text }}</p>
+                        </div>
+                        <br>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+

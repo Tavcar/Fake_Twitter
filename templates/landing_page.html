@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock title %}
+
+{% block navbar %}{% endblock navbar %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="jumbotron text-center">
+            <h1>Welcome to Fake Twitter!</h1>
+            <p>Worlds fakest Twitter site</p>
+
+
+        {% if logiran %}
+
+            <div>
+                <p><a class="btn btn-primary btn-lg" href="/home/{{ user.user_id() }}" role="button">ENTER</a></p>
+                <p><a class="btn btn-danger btn-lg" href="{{ logout_url }}" role="button">Logout</a></p>
+            </div>
+
+        {% else %}
+
+            <div>
+                <p><a class="btn btn-primary btn-lg" href="{{ login_url }}" role="button">Login</a></p>
+            </div>
+
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

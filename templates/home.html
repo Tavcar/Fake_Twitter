@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Home - {% endblock title %}
+
+{% block navbar %}
+<ul class="nav navbar-nav navbar-left">
+
+    <li><a href="{{ logout_url }}">Logout</a></li>
+</ul>
+
+<form class="navbar-form navbar-right" role="search" method="post" action="/results">
+    <div class="form-group">
+        <input type="text" name="search" class="form-control" placeholder="Search" required>
+    </div>
+    <button type="submit" name="search" class="btn btn-default">Submit</button>
+</form>
+{% endblock navbar %}
+
+{% block content %}
+
+<div class="jumbotron text-center">
+      <h1>Hello, {{ name }}!</h1>
+</div>
+
+<div class="container-fluid text-left">
+    <div class="row content">
+        <div class="col-sm-3 sidenav">
+           <div class="profile">
+                <p class="name">{{ name }}</p>
+                <p>@{{ handle }}</p>
+                <p>{{ email }}</p>
+                <p><a class="btn btn-info btn-xs" href="/edit" role="button">Edit profile</a></p>
+
+           </div>
+        </div>
+
+        <div class="col-sm-9 text-center">
+
+            <ul class="nav nav-tabs nav-justified">
+                <li role="presentation" class="active"><a href="/home/{{ user.user_id() }}">Home</a></li>
+                <li><a href="/following/{{ user.user_id() }}">Following</a></li>
+            </ul>
+
+            <div class="fweets">
+                <form name="new-tweet" method="post">
+                    <div class="input-group">
+                          <input type="text" class="form-control" name="text" maxlength="140" required>
+                          <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit" name="new-tweet">Tweet</button>
+                          </span>
+                    </div>
+                </form>
+                <br>
+
+                <div class="media">
+                    <div class="media-body text-left">
+                        {% for message in t_list %}
+                        <div class="msg">
+                                <form method="post">
+                                    <button class="btn btn-danger btn-xs pull-right" type="submit" value="{{ message.key.id() }}" name="delete">Delete</button>
+                                </form>
+                            <h4 class="media-heading">{{ message.user_name }} <span> @{{ message.user_handle }} {{ message.date }} </span></h4>
+
+                            <p>{{ message.text }}</p>
+                        </div>
+                        <br>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

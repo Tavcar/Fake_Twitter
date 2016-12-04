@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Finish your profile - {% endblock title %}
+
+{% block navbar %}
+
+    {% if t_user.handle %}
+
+        <ul class="nav navbar-nav navbar-left">
+            <li><a href="{{ logout_url }}">Logout</a></li>
+            <li><a href="/home/{{ user.user_id() }}">Home</a></li>
+            <li><a href="/following/{{ user.user_id() }}">Following</a></li>
+        </ul>
+
+        <form class="navbar-form navbar-right" role="search" method="post" action="/results">
+            <div class="form-group">
+                <input type="text" name="search" class="form-control" placeholder="Search" required>
+            </div>
+            <button type="submit" name="search" class="btn btn-default">Submit</button>
+        </form>
+
+    {% endif %}
+
+{% endblock navbar %}
+
+{% block content %}
+
+    {% if t_user.handle %}
+        <div class="jumbotron text-center">
+            <h1>Edit your Fake Twitter profile!</h1>
+            <p>Change your name and handle.</p>
+        </div>
+    {% else %}
+        <div class="jumbotron text-center">
+            <h1>Welcome to Fake Twitter!</h1>
+            <p>Please enter your name and choose a unique handle.</p>
+        </div>
+    {% endif %}
+
+    {% if warning %}
+        <div class="alert alert-danger text-center" role="alert">
+            <p>{{ warning }}</p>
+        </div>
+    {% endif %}
+
+<div class="col-sm-2"></div>
+<div class="col-sm-8 text-center">
+
+    {% if t_user.handle %}
+    <form action="/edit" method="post">
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">Name:</span>
+            <input type="text" class="form-control" value="{{ t_user.name }}" aria-describedby="sizing-addon1" required>
+        </div>
+        <br>
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">Handle:</span>
+            <input type="text" class="form-control" value="{{ t_user.handle }}" aria-describedby="sizing-addon1" required>
+        </div>
+        <br>
+        <button class="btn btn-primary btn-lg" type="submit">Confirm</button>
+    </form>
+
+    {% else %}
+
+    <form action="/edit" method="post">
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">Name:</span>
+            <input type="text" class="form-control" aria-describedby="sizing-addon1" required>
+        </div>
+        <br>
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">Handle:</span>
+            <input type="text" class="form-control" aria-describedby="sizing-addon1" required>
+        </div>
+        <br>
+        <button class="btn btn-primary btn-lg" type="submit">Confirm</button>
+    </form>
+
+    {% endif %}
+
+</div>
+<div class="col-sm-2"></div>
+
+{% endblock content %}

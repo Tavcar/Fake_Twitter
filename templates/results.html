@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Search results - {% endblock title %}
+
+{% block navbar %}
+<ul class="nav navbar-nav navbar-left">
+    <li><a href="{{ logout_url }}">Logout</a></li>
+    <li><a href="/home/{{ user.user_id() }}">Home</a></li>
+    <li><a href="/following/{{ user.user_id() }}">Following</a></li>
+</ul>
+
+<form class="navbar-form navbar-right" role="search" method="post" action="/results">
+    <div class="form-group">
+        <input type="text" name="search" class="form-control" placeholder="Search" required>
+    </div>
+    <button type="submit" name="search" class="btn btn-default">Submit</button>
+</form>
+{% endblock navbar %}
+
+{% block content %}
+
+<div class="jumbotron text-center">
+      <h1>Search results</h1>
+</div>
+
+<div class="container-fluid text-left">
+    <div class="row content text-center">
+        <div class="col-sm-6 sidenav">
+            <h2 class="text-center">Results for names:</h2>
+            <br>
+
+            {% if results1 %}
+
+                {% for result in results1 %}
+                <div>
+                    <p class="results"><a href="/other/{{ result.key.id() }}">{{ result.name }} <span>@{{ result.handle }}</span></a></p>
+
+                </div>
+                {% endfor %}
+
+            {% else %}
+                <p class="results">No results for names</p>
+            {% endif %}
+        </div>
+
+        <div class="col-sm-6 sidenav">
+            <h2 class="text-center">Results for handles:</h2>
+            <br>
+
+            {% if results2 %}
+
+                {% for result in results2 %}
+                <div>
+                    <p class="results"><a href="/other/{{ result.key.id() }}">@{{ result.handle }} <span>{{ result.name }}</span></a></p>
+
+                </div>
+                {% endfor %}
+
+            {% else %}
+
+                <p class="results">No results for handles</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

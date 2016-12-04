@@ -1,0 +1,49 @@
+body {
+    background-color: mint;
+    padding-bottom: 70px;
+    padding-top: 70px;
+}
+
+span {
+    font-size: 11px;
+}
+
+.date {
+    font
+}
+
+.jumbotron {
+    background-color: ;
+    color: ;
+}
+
+.fweets {
+    border-radius: 5px;
+    background-color: salmon;
+    border: 1px solid #ddd;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+}
+
+.msg {
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+
+}
+
+.name {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/*
+.profile {
+    background-color: salmon;
+    border-radius: 15px;
+    border: 1px solid #ddd;
+    padding: 20px;
+}
+
