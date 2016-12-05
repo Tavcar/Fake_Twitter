@@ -2,32 +2,77 @@
 
 {% block title %}{% endblock title %}
 
-{% block navbar %}{% endblock navbar %}
+{% block navbar %}
+    {% if logiran %}
+    <ul class="nav navbar-nav navbar-left">
+        <li><a href="{{ logout_url }}">Logout</a></li>
+        <li><a href="/home">Home</a></li>
+        <li><a href="/following">Following</a></li>
+    </ul>
+
+    <form class="navbar-form navbar-right" role="search" method="post" action="/results">
+        <div class="form-group">
+            <input type="text" name="search" class="form-control" placeholder="Search" required>
+        </div>
+        <button type="submit" name="search" class="btn btn-default">Search</button>
+    </form>
+    {% else %}
+    <ul class="nav navbar-nav navbar-left">
+        <li><a href="{{ login_url }}">Login</a></li>
+    </ul>
+    {% endif %}
+
+{% endblock navbar %}
+
+
+
 
 {% block content %}
 
-<div class="container">
 
-    <div class="jumbotron text-center">
+<div class="jumbotron text-center">
             <h1>Welcome to Fake Twitter!</h1>
             <p>Worlds fakest Twitter site</p>
+</div>
 
 
-        {% if logiran %}
+
+<div class="container text-center">
+
+    <div>
+        <form class="navbar-form" role="search" method="post" action="/results">
+            <div class="form-group">
+                <input type="text" name="search" class="form-control" placeholder="Search" required>
+            </div>
+            <button type="submit" name="search" class="btn btn-default">Search</button>
+        </form>
+    </div>
+    <br>
+    <br>
+    {% if logiran %}
 
             <div>
-                <p><a class="btn btn-warning btn-lg" href="/home" role="button">Enter</a></p>
-                <p><a class="btn btn-danger btn-lg" href="{{ logout_url }}" role="button">Exit</a></p>
+                <p><a class="btn btn-primary btn-lg" href="/home" role="button">Home</a></p>
+                <p><a class="btn btn-danger btn-lg" href="{{ logout_url }}" role="button">Logout</a></p>
             </div>
 
         {% else %}
 
             <div>
-                <p><a class="btn btn-warning btn-lg" href="{{ login_url }}" role="button">Login</a></p>
+                <p><a class="btn btn-primary btn-lg" href="{{ login_url }}" role="button">Login</a></p>
             </div>
 
         {% endif %}
-    </div>
+
+
 </div>
+
+
+
+
+
+
+
+
 
 {% endblock content %}

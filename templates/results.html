@@ -3,18 +3,37 @@
 {% block title %}Search results - {% endblock title %}
 
 {% block navbar %}
-<ul class="nav navbar-nav navbar-left">
-    <li><a href="{{ logout_url }}">Logout</a></li>
-    <li><a href="/home">Home</a></li>
-    <li><a href="/following">Following</a></li>
-</ul>
 
-<form class="navbar-form navbar-right" role="search" method="post" action="/results">
-    <div class="form-group">
-        <input type="text" name="search" class="form-control" placeholder="Search" required>
-    </div>
-    <button type="submit" name="search" class="btn btn-default">Submit</button>
-</form>
+    {% if logiran %}
+
+    <ul class="nav navbar-nav navbar-left">
+        <li><a href="{{ logout_url }}">Logout</a></li>
+        <li><a href="/home">Home</a></li>
+        <li><a href="/following">Following</a></li>
+    </ul>
+
+    <form class="navbar-form navbar-right" role="search" method="post" action="/results">
+        <div class="form-group">
+            <input type="text" name="search" class="form-control" placeholder="Search" required>
+        </div>
+        <button type="submit" name="search" class="btn btn-default">Search</button>
+    </form>
+
+    {% else %}
+
+    <ul class="nav navbar-nav navbar-left">
+        <li><a href="{{ login_url }}">Login</a></li>
+    </ul>
+
+    <form class="navbar-form navbar-right" role="search" method="post" action="/results">
+        <div class="form-group">
+            <input type="text" name="search" class="form-control" placeholder="Search" required>
+        </div>
+        <button type="submit" name="search" class="btn btn-default">Search</button>
+    </form>
+
+    {% endif %}
+
 {% endblock navbar %}
 
 {% block content %}

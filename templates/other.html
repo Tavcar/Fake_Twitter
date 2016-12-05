@@ -3,18 +3,37 @@
 {% block title %}{{ handle }} - {% endblock title %}
 
 {% block navbar %}
-<ul class="nav navbar-nav navbar-left">
-    <li><a href="{{ logout_url }}">Logout</a></li>
-    <li><a href="/home">Home</a></li>
-    <li><a href="/following">Following</a></li>
-</ul>
 
-<form class="navbar-form navbar-right" role="search" method="post" action="/results">
-    <div class="form-group">
-        <input type="text" name="search" class="form-control" placeholder="Search" required>
-    </div>
-    <button type="submit" name="search" class="btn btn-default">Submit</button>
-</form>
+    {% if logiran %}
+
+    <ul class="nav navbar-nav navbar-left">
+        <li><a href="{{ logout_url }}">Logout</a></li>
+        <li><a href="/home">Home</a></li>
+        <li><a href="/following">Following</a></li>
+    </ul>
+
+    <form class="navbar-form navbar-right" role="search" method="post" action="/results">
+        <div class="form-group">
+            <input type="text" name="search" class="form-control" placeholder="Search" required>
+        </div>
+        <button type="submit" name="search" class="btn btn-default">Search</button>
+    </form>
+
+    {% else %}
+
+    <ul class="nav navbar-nav navbar-left">
+        <li><a href="{{ login_url }}">Login</a></li>
+    </ul>
+
+    <form class="navbar-form navbar-right" role="search" method="post" action="/results">
+        <div class="form-group">
+            <input type="text" name="search" class="form-control" placeholder="Search" required>
+        </div>
+        <button type="submit" name="search" class="btn btn-default">Search</button>
+    </form>
+
+    {% endif %}
+
 {% endblock navbar %}
 
 {% block content %}
@@ -31,37 +50,45 @@
                 <p>@{{ handle }}</p>
                 <p>{{ email }}</p>
 
-                {% if follow_check %}
+                {% if logiran %}
+                    {% if follow_check %}
 
-                    <div>
-                        <form action="/other/{{ id_user }}" method="post">
-                            <button class="btn btn-danger" type="submit" value="unfollow" name="unfollow">Unfollow</button>
-                        </form>
-                    </div>
+                        <div>
+                            <form action="/other/{{ id_user }}" method="post">
+                                <button class="btn btn-danger" type="submit" value="unfollow" name="unfollow">Unfollow</button>
+                            </form>
+                        </div>
 
-                {% else %}
+                    {% else %}
 
-                    <div>
-                        <form action="/other/{{ id_user }}" method="post">
-                            <button class="btn btn-primary" type="submit" value="follow" name="follow">Follow</button>
-                        </form>
-                    </div>
+                        <div>
+                            <form action="/other/{{ id_user }}" method="post">
+                                <button class="btn btn-primary" type="submit" value="follow" name="follow">Follow</button>
+                            </form>
+                        </div>
 
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
         <br>
         <div class="col-sm-9 text-center">
             <div class="block">
+
                 <div class="fweets">
-                    <form name="new-tweet" method="post">
-                        <div class="input-group">
-                              <input type="text" class="form-control" name="text" maxlength="140" required>
-                              <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="submit" name="new-tweet">Tweet</button>
-                              </span>
-                        </div>
-                    </form>
+
+                    {% if logiran %}
+
+                        <form name="new-tweet" method="post">
+                            <div class="input-group">
+                                  <input type="text" class="form-control" name="text" maxlength="140" required>
+                                  <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="submit" name="new-tweet">Tweet</button>
+                                  </span>
+                            </div>
+                        </form>
+
+                    {% endif %}
 
                     <br>
 

@@ -48,7 +48,7 @@ class BaseHandler(webapp2.RequestHandler):
                 return self.response.out.write(template.render(params))
         else:
             logiran = False
-            login_url = users.create_login_url('/')
+            login_url = users.create_login_url('/home')
             params["login_url"] = login_url
             params["logiran"] = logiran
 
@@ -67,11 +67,12 @@ class HomeHandler(BaseHandler):
     def get(self):
         user = users.get_current_user()
         c_user = User.query(User.email == user.email()).get()
-        name = c_user.name
-        handle = c_user.handle
-        email = c_user.email
 
-        if c_user.handle:
+        if c_user:
+            name = c_user.name
+            handle = c_user.handle
+            email = c_user.email
+
             t_user = user
             t_list = Message.query(Message.email == c_user.email).fetch()
             sorted_list = sorted(t_list, key=attrgetter("date"), reverse=True)
@@ -145,13 +146,18 @@ class OtherHandler(BaseHandler):
         message_list = Message.query(Message.email == o_user.email).fetch()
 
         user = users.get_current_user()
-        u_email = user.email()
-        follow_check = Follow.query(Follow.user_id == u_email, Follow.following_id == email).get()
+        if user:
+            u_email = user.email()
+            follow_check = Follow.query(Follow.user_id == u_email, Follow.following_id == email).get()
 
-        params = {"list": message_list, "user": o_user, "name": name, "handle": handle, "email": email,
-                  "id_user": user_id, "follow_check": follow_check}
+            params = {"list": message_list, "user": o_user, "name": name, "handle": handle, "email": email,
+                      "id_user": user_id, "follow_check": follow_check}
 
-        return self.render_template("other.html", params=params)
+            return self.render_template("other.html", params=params)
+        else:
+            params = {"list": message_list, "user": o_user, "name": name, "handle": handle, "email": email,
+                      "id_user": user_id}
+            return self.render_template("other.html", params=params)
 
     def post(self, user_id):
         user = users.get_current_user()
@@ -224,14 +230,22 @@ class SearchResultsHandler(BaseHandler):
     def post(self):
         search = self.request.get("search")
         user = users.get_current_user()
-        t_user = User.query(User.email == user.email()).get()
+        if user:
+            t_user = User.query(User.email == user.email()).get()
 
-        if search:
-            users_list = User.query().fetch()
-            results1 = [i for i in users_list if search in i.name and i.handle != t_user.handle]
-            results2 = [i for i in users_list if search in i.handle and i.handle != t_user.handle]
-            params = {"results1": results1, "results2": results2}
-            return self.render_template("results.html", params=params)
+            if search:
+                users_list = User.query().fetch()
+                results1 = [i for i in users_list if search in i.name and i.handle != t_user.handle]
+                results2 = [i for i in users_list if search in i.handle and i.handle != t_user.handle]
+                params = {"results1": results1, "results2": results2}
+                return self.render_template("results.html", params=params)
+        else:
+            if search:
+                users_list = User.query().fetch()
+                results1 = [i for i in users_list if search in i.name]
+                results2 = [i for i in users_list if search in i.handle]
+                params = {"results1": results1, "results2": results2}
+                return self.render_template("results.html", params=params)
 
 
 app = webapp2.WSGIApplication([
