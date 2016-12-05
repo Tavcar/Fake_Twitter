@@ -96,18 +96,15 @@ class HomeHandler(BaseHandler):
         if delete:
             message = Message.get_by_id(int(delete))
             message.key.delete()
-            #return self.redirect('/home/' + str(user.user_id()))
             return self.redirect_to("home")
 
         if text:
             message = Message(user_name=user_name, email=email, text=text, date=date, userid=userid,
                               user_handle=user_handle)
             message.put()
-            #return self.redirect('/home/' + str(user.user_id()))
             return self.redirect_to("home")
 
         else:
-            #return self.redirect('/home/' + str(user.user_id()))
             return self.redirect_to("home")
 
 
@@ -135,7 +132,6 @@ class EditHandler(BaseHandler):
             t_user.name = name
             t_user.handle = handle
             t_user.put()
-            #return self.redirect('/home/' + str(user.user_id()))
             return self.redirect('/home')
             #return self.redirect_to("home")
 
@@ -216,10 +212,8 @@ class FollowingHandler(BaseHandler):
             message = Message(user_name=user_name, email=email, text=text, date=date, userid=userid,
                               user_handle=user_handle)
             message.put()
-            #return self.redirect('/following/' + str(user.user_id()))
             return self.redirect_to("following")
         else:
-            #return self.redirect('/following/' + str(user.user_id()))
             return self.redirect_to("following")
 
 
@@ -229,10 +223,13 @@ class SearchResultsHandler(BaseHandler):
 
     def post(self):
         search = self.request.get("search")
+        user = users.get_current_user()
+        t_user = User.query(User.email == user.email()).get()
+
         if search:
             users_list = User.query().fetch()
-            results1 = [i for i in users_list if search in i.name]
-            results2 = [i for i in users_list if search in i.handle]
+            results1 = [i for i in users_list if search in i.name and i.handle != t_user.handle]
+            results2 = [i for i in users_list if search in i.handle and i.handle != t_user.handle]
             params = {"results1": results1, "results2": results2}
             return self.render_template("results.html", params=params)
 
