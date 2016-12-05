@@ -1,7 +1,14 @@
 body {
-    background-color: mint;
+    background-color: whitesmoke;
     padding-bottom: 70px;
     padding-top: 70px;
+}
+
+.block {
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+
 }
 
 span {
@@ -13,13 +20,15 @@ span {
 }
 
 .jumbotron {
-    background-color: ;
-    color: ;
+    background-color: #4d94ff;
+    color: ghostwhite;
+    text-shadow: -1px 0  #414141, 0 1px  #414141, 1px 0  #414141, 0 -1px  #414141;
+
 }
 
 .fweets {
     border-radius: 5px;
-    background-color: salmon;
+    background-color: #cce0ff;
     border: 1px solid #ddd;
     padding-left: 20px;
     padding-right: 20px;
@@ -39,9 +48,22 @@ span {
     font-weight: 600;
 }
 
+
+.unactive {
+    background-color: white;
+}
+
+.results {
+    font-size: 18px;
+}
+
+.results-sm {
+    font-size: 14px;
+}
+
 /*
 .profile {
-    background-color: salmon;
+    background-color:  #cce0ff;
     border-radius: 15px;
     border: 1px solid #ddd;
     padding: 20px;

@@ -8,8 +8,8 @@
 
         <ul class="nav navbar-nav navbar-left">
             <li><a href="{{ logout_url }}">Logout</a></li>
-            <li><a href="/home/{{ user.user_id() }}">Home</a></li>
-            <li><a href="/following/{{ user.user_id() }}">Following</a></li>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/following">Following</a></li>
         </ul>
 
         <form class="navbar-form navbar-right" role="search" method="post" action="/results">
@@ -47,15 +47,16 @@
 <div class="col-sm-8 text-center">
 
     {% if t_user.handle %}
-    <form action="/edit" method="post">
+
+    <form method="post">
         <div class="input-group input-group-lg">
             <span class="input-group-addon">Name:</span>
-            <input type="text" class="form-control" value="{{ t_user.name }}" aria-describedby="sizing-addon1" required>
+            <input type="text" class="form-control" name="name" value="{{ t_user.name }}" aria-describedby="sizing-addon1" required>
         </div>
         <br>
         <div class="input-group input-group-lg">
             <span class="input-group-addon">Handle:</span>
-            <input type="text" class="form-control" value="{{ t_user.handle }}" aria-describedby="sizing-addon1" required>
+            <input type="text" class="form-control" name="handle" value="{{ t_user.handle }}" aria-describedby="sizing-addon1" required>
         </div>
         <br>
         <button class="btn btn-primary btn-lg" type="submit">Confirm</button>
@@ -63,15 +64,15 @@
 
     {% else %}
 
-    <form action="/edit" method="post">
+    <form method="post">
         <div class="input-group input-group-lg">
             <span class="input-group-addon">Name:</span>
-            <input type="text" class="form-control" aria-describedby="sizing-addon1" required>
+            <input type="text" class="form-control" name="name" aria-describedby="sizing-addon1" required>
         </div>
         <br>
         <div class="input-group input-group-lg">
             <span class="input-group-addon">Handle:</span>
-            <input type="text" class="form-control" aria-describedby="sizing-addon1" required>
+            <input type="text" class="form-control" name="handle" aria-describedby="sizing-addon1" required>
         </div>
         <br>
         <button class="btn btn-primary btn-lg" type="submit">Confirm</button>

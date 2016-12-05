@@ -16,14 +16,14 @@
         {% if logiran %}
 
             <div>
-                <p><a class="btn btn-primary btn-lg" href="/home/{{ user.user_id() }}" role="button">ENTER</a></p>
-                <p><a class="btn btn-danger btn-lg" href="{{ logout_url }}" role="button">Logout</a></p>
+                <p><a class="btn btn-warning btn-lg" href="/home" role="button">Enter</a></p>
+                <p><a class="btn btn-danger btn-lg" href="{{ logout_url }}" role="button">Exit</a></p>
             </div>
 
         {% else %}
 
             <div>
-                <p><a class="btn btn-primary btn-lg" href="{{ login_url }}" role="button">Login</a></p>
+                <p><a class="btn btn-warning btn-lg" href="{{ login_url }}" role="button">Login</a></p>
             </div>
 
         {% endif %}

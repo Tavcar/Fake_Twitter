@@ -35,36 +35,37 @@
         </div>
 
         <div class="col-sm-9 text-center">
+            <div class="block">
+                <ul class="nav nav-tabs nav-justified">
+                    <li role="presentation" class="active"><a href="/home">Home</a></li>
+                    <li><a href="/following" class="unactive">Following</a></li>
+                </ul>
 
-            <ul class="nav nav-tabs nav-justified">
-                <li role="presentation" class="active"><a href="/home/{{ user.user_id() }}">Home</a></li>
-                <li><a href="/following/{{ user.user_id() }}">Following</a></li>
-            </ul>
-
-            <div class="fweets">
-                <form name="new-tweet" method="post">
-                    <div class="input-group">
-                          <input type="text" class="form-control" name="text" maxlength="140" required>
-                          <span class="input-group-btn">
-                                <button class="btn btn-primary" type="submit" name="new-tweet">Tweet</button>
-                          </span>
-                    </div>
-                </form>
-                <br>
-
-                <div class="media">
-                    <div class="media-body text-left">
-                        {% for message in t_list %}
-                        <div class="msg">
-                                <form method="post">
-                                    <button class="btn btn-danger btn-xs pull-right" type="submit" value="{{ message.key.id() }}" name="delete">Delete</button>
-                                </form>
-                            <h4 class="media-heading">{{ message.user_name }} <span> @{{ message.user_handle }} {{ message.date }} </span></h4>
-
-                            <p>{{ message.text }}</p>
+                <div class="fweets">
+                    <form name="new-tweet" method="post">
+                        <div class="input-group">
+                              <input type="text" class="form-control" name="text" maxlength="140" required>
+                              <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="submit" name="new-tweet">Tweet</button>
+                              </span>
                         </div>
-                        <br>
-                        {% endfor %}
+                    </form>
+                    <br>
+
+                    <div class="media">
+                        <div class="media-body text-left">
+                            {% for message in t_list %}
+                            <div class="msg">
+                                    <form method="post">
+                                        <button class="btn btn-danger btn-xs pull-right" type="submit" value="{{ message.key.id() }}" name="delete">Delete</button>
+                                    </form>
+                                <h4 class="media-heading">{{ message.user_name }} <span> @{{ message.user_handle }} {{ message.date }} </span></h4>
+
+                                <p>{{ message.text }}</p>
+                            </div>
+                            <br>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>

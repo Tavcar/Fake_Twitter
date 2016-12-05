@@ -5,8 +5,8 @@
 {% block navbar %}
 <ul class="nav navbar-nav navbar-left">
     <li><a href="{{ logout_url }}">Logout</a></li>
-    <li><a href="/home/{{ user.user_id() }}">Home</a></li>
-    <li><a href="/following/{{ user.user_id() }}">Following</a></li>
+    <li><a href="/home">Home</a></li>
+    <li><a href="/following">Following</a></li>
 </ul>
 
 <form class="navbar-form navbar-right" role="search" method="post" action="/results">
@@ -33,7 +33,7 @@
 
                 {% for result in results1 %}
                 <div>
-                    <p class="results"><a href="/other/{{ result.key.id() }}">{{ result.name }} <span>@{{ result.handle }}</span></a></p>
+                    <p class="results"><a href="/other/{{ result.key.id() }}">{{ result.name }} <span class="results-sm">@{{ result.handle }}</span></a></p>
 
                 </div>
                 {% endfor %}
@@ -51,7 +51,7 @@
 
                 {% for result in results2 %}
                 <div>
-                    <p class="results"><a href="/other/{{ result.key.id() }}">@{{ result.handle }} <span>{{ result.name }}</span></a></p>
+                    <p class="results"><a href="/other/{{ result.key.id() }}">@{{ result.handle }} <span class="results-sm">{{ result.name }}</span></a></p>
 
                 </div>
                 {% endfor %}

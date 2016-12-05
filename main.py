@@ -42,12 +42,10 @@ class BaseHandler(webapp2.RequestHandler):
             t_user = User.query(User.email == user.email()).get()
             if t_user:
                 return self.response.out.write(template.render(params))
-
             else:
                 t_user = User(email=user.email())
                 t_user.put()
                 return self.response.out.write(template.render(params))
-
         else:
             logiran = False
             login_url = users.create_login_url('/')
@@ -66,30 +64,29 @@ class MainHandler(BaseHandler):
 
 
 class HomeHandler(BaseHandler):
-    def get(self, user_id):
+    def get(self):
         user = users.get_current_user()
         c_user = User.query(User.email == user.email()).get()
         name = c_user.name
         handle = c_user.handle
         email = c_user.email
 
-        if c_user.handle and c_user.name: # dodano c_user.name
-            t_user = User.get_by_id(user_id)
+        if c_user.handle:
+            t_user = user
             t_list = Message.query(Message.email == c_user.email).fetch()
             sorted_list = sorted(t_list, key=attrgetter("date"), reverse=True)
             params = {"t_list": sorted_list, "user": c_user, "tuser": t_user, "name": name, "handle": handle,
                       "email": email}
             return self.render_template("home.html", params=params)
-
         else:
-            return self.render_template("edit.html")
+            return self.redirect('/edit')
 
-    def post(self, user_id):
+    def post(self):
         user = users.get_current_user()
         t_user = User.query(User.email == user.email()).get()
 
         email = user.email()
-        userid= user.user_id()
+        userid = user.user_id()
         user_name = t_user.name
         user_handle = t_user.handle
         date = datetime.now().strftime("%d-%m-%Y at %H:%M:%S")
@@ -99,51 +96,19 @@ class HomeHandler(BaseHandler):
         if delete:
             message = Message.get_by_id(int(delete))
             message.key.delete()
-            return self.redirect('/home/' + str(user.user_id()))
+            #return self.redirect('/home/' + str(user.user_id()))
+            return self.redirect_to("home")
 
         if text:
             message = Message(user_name=user_name, email=email, text=text, date=date, userid=userid,
                               user_handle=user_handle)
             message.put()
-            return self.redirect('/home/' + str(user.user_id()))
+            #return self.redirect('/home/' + str(user.user_id()))
+            return self.redirect_to("home")
+
         else:
-            return self.redirect('/home/' + str(user.user_id()))
-
-
-class OtherHandler(BaseHandler):
-    def get(self, user_id):
-        o_user = User.get_by_id(int(user_id))
-        name = o_user.name
-        handle = o_user.handle
-        email = o_user.email
-        message_list = Message.query(Message.email == o_user.email).fetch()
-
-        user = users.get_current_user()
-        u_email = user.email()
-        follow_check = Follow.query(Follow.user_id == u_email, Follow.following_id == email).get()
-
-        params = {"list": message_list, "user": o_user, "name": name, "handle": handle, "email": email,
-                  "id_user": user_id, "follow_check": follow_check}
-
-        return self.render_template("other.html", params=params)
-
-    def post(self, user_id):
-        user = users.get_current_user()
-        o_user = User.get_by_id(int(user_id))
-        u_email = user.email()
-        o_email = o_user.email
-
-        follow_user = self.request.get("follow")
-
-        if follow_user == "follow":
-            follow = Follow(user_id=u_email, following_id=o_email)
-            follow.put()
-            return self.redirect('/other/' + str(user_id))
-        else:
-            following = Follow.query(Follow.user_id == u_email, Follow.following_id == o_email).get()
-            following.key.delete()
-
-            return self.redirect('/other/' + str(user_id))
+            #return self.redirect('/home/' + str(user.user_id()))
+            return self.redirect_to("home")
 
 
 class EditHandler(BaseHandler):
@@ -170,38 +135,78 @@ class EditHandler(BaseHandler):
             t_user.name = name
             t_user.handle = handle
             t_user.put()
-            return self.redirect('/home/' + str(user.user_id()))
+            #return self.redirect('/home/' + str(user.user_id()))
+            return self.redirect('/home')
+            #return self.redirect_to("home")
+
+
+class OtherHandler(BaseHandler):
+    def get(self, user_id):
+        o_user = User.get_by_id(int(user_id))
+        name = o_user.name
+        handle = o_user.handle
+        email = o_user.email
+        message_list = Message.query(Message.email == o_user.email).fetch()
+
+        user = users.get_current_user()
+        u_email = user.email()
+        follow_check = Follow.query(Follow.user_id == u_email, Follow.following_id == email).get()
+
+        params = {"list": message_list, "user": o_user, "name": name, "handle": handle, "email": email,
+                  "id_user": user_id, "follow_check": follow_check}
+
+        return self.render_template("other.html", params=params)
+
+    def post(self, user_id):
+        user = users.get_current_user()
+        o_user = User.get_by_id(int(user_id))
+        u_email = user.email()
+        o_email = o_user.email
+        follow_user = self.request.get("follow")
+
+        if follow_user == "follow":
+            follow = Follow(user_id=u_email, following_id=o_email)
+            follow.put()
+            return self.redirect('/other/' + str(user_id))
+        else:
+            following = Follow.query(Follow.user_id == u_email, Follow.following_id == o_email).get()
+            following.key.delete()
+
+            return self.redirect('/other/' + str(user_id))
 
 
 class FollowingHandler(BaseHandler):
-    def get(self, user_id):
+    def get(self):
         user = users.get_current_user()
         c_user = User.query(User.email == user.email()).get()
         name = c_user.name
         handle = c_user.handle
         email = c_user.email
-
         following_list = Follow.query(Follow.user_id == user.email()).fetch()
+
         if following_list:
             for followers in following_list:
                 follow = followers.following_id
-
                 msg_list = Message.query(Message.email == follow).fetch()
-                for message in msg_list:
-                    uid = message.userid
-                    o_user = User.query(User.user_id == uid).get()
-                    params = {"list": msg_list, "o_user": o_user, "name": name, "handle": handle, "email": email}
+
+                if msg_list:
+                    for message in msg_list:
+                        uid = message.userid
+                        o_user = User.query(User.user_id == uid).get()
+                        params = {"list": msg_list, "o_user": o_user, "name": name, "handle": handle, "email": email}
+                        return self.render_template("following.html", params=params)
+                else:
+                    params = {"name": name, "handle": handle, "email": email}
                     return self.render_template("following.html", params=params)
         else:
             params = {"name": name, "handle": handle, "email": email}
             return self.render_template("following.html", params=params)
 
-    def post(self, user_id):
+    def post(self):
         user = users.get_current_user()
         t_user = User.query(User.email == user.email()).get()
-
         email = user.email()
-        userid= user.user_id()
+        userid = user.user_id()
         user_name = t_user.name
         user_handle = t_user.handle
         date = datetime.now().strftime("%d-%m-%Y at %H:%M:%S")
@@ -211,14 +216,15 @@ class FollowingHandler(BaseHandler):
             message = Message(user_name=user_name, email=email, text=text, date=date, userid=userid,
                               user_handle=user_handle)
             message.put()
-            return self.redirect('/following/' + str(user.user_id()))
+            #return self.redirect('/following/' + str(user.user_id()))
+            return self.redirect_to("following")
         else:
-            return self.redirect('/following/' + str(user.user_id()))
+            #return self.redirect('/following/' + str(user.user_id()))
+            return self.redirect_to("following")
 
 
 class SearchResultsHandler(BaseHandler):
     def get(self):
-
         return self.render_template("results.html")
 
     def post(self):
@@ -233,10 +239,9 @@ class SearchResultsHandler(BaseHandler):
 
 app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler, name="main-page"),
-    webapp2.Route('/home/<user_id:\d+>', HomeHandler, name="home"),
+    webapp2.Route('/home', HomeHandler, name="home"),
     webapp2.Route('/other/<user_id:\d+>', OtherHandler, name="other"),
     webapp2.Route('/edit', EditHandler, name="edit"),
-    #webapp2.Route('/<user_id:\d+>/profile', ProfileHandler, name="profile"),
-    webapp2.Route('/following/<user_id:\d+>', FollowingHandler, name="following"),
+    webapp2.Route('/following', FollowingHandler, name="following"),
     webapp2.Route('/results', SearchResultsHandler, name="results"),
 ], debug=True)
