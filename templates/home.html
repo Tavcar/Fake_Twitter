@@ -28,8 +28,7 @@
            <div class="profile">
                 <p class="name">{{ name }}</p>
                 <p>@{{ handle }}</p>
-                <p>{{ email }}</p>
-                <p><a class="btn btn-info btn-xs" href="/edit" role="button">Edit profile</a></p>
+                <p><a class="btn btn-warning btn-xs" href="/edit" role="button">Edit profile</a></p>
 
            </div>
         </div>
@@ -42,7 +41,10 @@
                 </ul>
 
                 <div class="fweets">
+
                     <form name="new-tweet" method="post">
+                        <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+
                         <div class="input-group">
                               <input type="text" class="form-control" name="text" maxlength="140" required>
                               <span class="input-group-btn">
@@ -50,6 +52,7 @@
                               </span>
                         </div>
                     </form>
+
                     <br>
 
                     <div class="media">
@@ -57,7 +60,35 @@
                             {% for message in t_list %}
                             <div class="msg">
                                     <form method="post">
-                                        <button class="btn btn-danger btn-xs pull-right" type="submit" value="{{ message.key.id() }}" name="delete">Delete</button>
+                                        <a class="btn btn-danger btn-xs pull-right" href="#" data-toggle="modal" data-target="#deleteTweetModal{{ message.key.id() }}">Delete</a>
+
+                                        <div class="modal fade" id="deleteTweetModal{{ message.key.id() }}" tabindex="-1" role="dialog" aria-labelledby="deleteTweetModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <form method="post" action="/home">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                <h4 class="modal-title" id="deleteTweetLabel">Delete tweet</h4>
+                                                            </div>
+
+                                                            <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+
+                                                            <div class="modal-body">
+                                                                <p>
+                                                                    Do you really want to delete this tweet? <br>
+                                                                    {{ message.text }}
+                                                                </p>
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button type="submit" class="btn btn-danger" value="{{ message.key.id() }}" name="delete">Delete tweet</button>
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+
                                     </form>
                                 <h4 class="media-heading">{{ message.user_name }} <span> @{{ message.user_handle }} {{ message.date }} </span></h4>
 

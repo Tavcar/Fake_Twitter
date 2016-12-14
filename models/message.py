@@ -8,6 +8,8 @@ class Message(ndb.Model):
     user_handle = ndb.StringProperty()
     date = ndb.StringProperty()
     text = ndb.StringProperty()
+    deleted = ndb.BooleanProperty(default=False)
+    updated = ndb.DateTimeProperty(auto_now=True)
 
     @classmethod
     def create(cls, user_name, email, text, date, userid, user_handle):

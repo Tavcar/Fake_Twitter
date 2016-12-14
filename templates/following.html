@@ -29,7 +29,6 @@
            <div class="profile">
                 <p class="name">{{ name }}</p>
                 <p>@{{ handle }}</p>
-                <p>{{ email }}</p>
                 <p><a class="btn btn-info btn-xs" href="/edit" role="button">Edit profile</a></p>
            </div>
         </div>
@@ -43,6 +42,7 @@
 
                 <div class="fweets">
                         <form name="new-tweet" method="post">
+                            <input type="hidden" name="csrf_token" value="{{csrf_token}}">
                             <div class="input-group">
                                   <input type="text" class="form-control" name="text" maxlength="140" required>
                                   <span class="input-group-btn">

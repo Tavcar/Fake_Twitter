@@ -42,6 +42,16 @@
             </div><!-- /.container-fluid -->
         </nav>
 
+    {% if cookies %}
+        <!-- Add stuff that creates cookies here, like Google Analytics or Facebook Pixel. -->
+     {% else %}
+        <div class="alert alert-danger" role="alert">
+            Hey, we use cookies. Do you accept them?
+            <form action="/set-cookie" method="post">
+                <button class="btn btn-success btn-xs">I accept</button>
+            </form>
+        </div>
+    {% endif %}
 
 
     {% block content %}

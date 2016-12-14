@@ -48,14 +48,40 @@
             <div class="profile">
                 <p class="name">{{ name }}</p>
                 <p>@{{ handle }}</p>
-                <p>{{ email }}</p>
 
                 {% if logiran %}
                     {% if follow_check %}
 
                         <div>
                             <form action="/other/{{ id_user }}" method="post">
-                                <button class="btn btn-danger" type="submit" value="unfollow" name="unfollow">Unfollow</button>
+                                <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#unfollowModal">Unfollow</a>
+
+                                <div class="modal fade" id="unfollowModal" tabindex="-1" role="dialog" aria-labelledby="unfollowModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <form method="post" action="/other/{{ id_user }}">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="unfollowLabel">Unfollow</h4>
+                                                </div>
+
+                                                <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+
+                                                <div class="modal-body">
+                                                    <p>
+                                                        Do you really want to unfollow {{ name }}?
+                                                    </p>
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-danger" value="unfollow" name="unfollow">Unfollow</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
                             </form>
                         </div>
 
@@ -80,6 +106,7 @@
                     {% if logiran %}
 
                         <form name="new-tweet" method="post">
+                            <input type="hidden" name="csrf_token" value="{{csrf_token}}">
                             <div class="input-group">
                                   <input type="text" class="form-control" name="text" maxlength="140" required>
                                   <span class="input-group-btn">

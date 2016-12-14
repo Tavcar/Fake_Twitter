@@ -13,6 +13,7 @@
         </ul>
 
         <form class="navbar-form navbar-right" role="search" method="post" action="/results">
+            <input type="hidden" name="csrf_token" value="{{csrf_token}}">
             <div class="form-group">
                 <input type="text" name="search" class="form-control" placeholder="Search" required>
             </div>
@@ -61,6 +62,13 @@
         <br>
         <button class="btn btn-primary btn-lg" type="submit">Confirm</button>
     </form>
+
+    <br>
+    <p><a class="btn btn-primary btn-lg" href="/home" role="button">Back</a></p>
+    <!--
+    <br>
+    <p><a class="btn btn-danger btn-lg" href="/delete" role="button">Delete profile</a></p>-->
+
 
     {% else %}
 

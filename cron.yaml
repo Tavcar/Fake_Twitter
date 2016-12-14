@@ -1,0 +1,5 @@
+cron:
+- description: Delete message older than 10 days
+  url: /cron/delete-message
+  schedule: every monday 05:00
+  timezone: Europe/Ljubljana
